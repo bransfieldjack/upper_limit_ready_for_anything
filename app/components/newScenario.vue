@@ -98,7 +98,7 @@
                     color="#F9921C" />
 
                 <Button row="24" colSpan="3" text="My Scenarios"
-                    @tap="onButtonTap" class="mark-as-complete-button"
+                    @tap="myScenarios" class="mark-as-complete-button"
                     color="#F9921C" />
 
                 <Label text="" row="25" colSpan="3" class="p"
@@ -116,15 +116,20 @@
 </template>
 
 <script>
+    import myScenarios from "./myScenarios";
     import Vue from "nativescript-vue";
     import RadDataForm from "nativescript-ui-dataform/vue";
+
     Vue.use(RadDataForm);
 
     export default {
         methods: {
             onButtonTap() {
                 console.log("Button was pressed");
-            }
+            },
+            myScenarios() { 
+                this.$navigateTo(myScenarios);
+            },
         },
 
         data() {

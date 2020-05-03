@@ -7,7 +7,7 @@
             <StackLayout orientation="vertical" height="100%"
                 backgroundColor="white">
 
-                <Image src="~/images/upper_limit_expand.JPG" loadMode="async"
+                <Image src="~/images/upper_limit_expand_png.png" loadMode="async"
                     stretch="aspectFit" height="40%" width="50%">
                 </Image>
 
@@ -17,26 +17,64 @@
                 <Button text="My Scenarios" @tap="myScenarios" width="60%"
                     class="my-button" height="60" />
 
-                <Button text="Add Custom" @tap="onButtonTap" width="60%"
+                <Button text="Add Custom" @tap="newScenario" width="60%"
                     class="my-button" height="60" />
 
-                <Button text="Help / how to" @tap="onButtonTap" width="60%"
+                <Button text="Help / how to" @tap="help" width="60%"
                     class="my-button" height="60" />
-
 
                 <SearchBar hint="Search " width="100%" height="50"
                     @submit="onSearchSubmit" />
 
-
             </StackLayout>
 
         </ScrollView>
+
+        <BottomNavigation selectedIndex="1">
+
+            <!-- The bottom tab UI is created via TabStrip (the containier) and TabStripItem (for each tab)-->
+            <TabStrip>
+                <TabStripItem>
+                    <Label text="Home"></Label>
+                    <Image src="font://&#xf015;" class="fas t-36"></Image>
+                </TabStripItem>
+                <TabStripItem class="special">
+                    <Label text="Account"></Label>
+                    <Image src="font://&#xf007;" class="fas t-36"></Image>
+                </TabStripItem>
+                <TabStripItem class="special">
+                    <Label text="Search"></Label>
+                    <Image src="font://&#xf00e;" class="fas t-36"></Image>
+                </TabStripItem>
+            </TabStrip>
+
+            <!-- The number of TabContentItem components should corespond to the number of TabStripItem components -->
+            <TabContentItem>
+                <GridLayout>
+                    <Label text="Home Page" class="h2 text-center"></Label>
+                </GridLayout>
+            </TabContentItem>
+            <TabContentItem>
+                <GridLayout>
+                    <Label text="Account Page" class="h2 text-center"></Label>
+                </GridLayout>
+            </TabContentItem>
+            <TabContentItem>
+                <GridLayout>
+                    <Label text="Search Page" class="h2 text-center"></Label>
+                </GridLayout>
+            </TabContentItem>
+
+        </BottomNavigation>
+        
     </Page>
 </template>
 
 <script>
     import newScenario from "./newScenario";
     import myScenarios from "./myScenarios";
+    import addCustom from "./addCustom";
+    import help from "./help";
 
     export default {
         methods: {
@@ -45,8 +83,12 @@
                 console.log("You are searching for " + searchBar.text);
             },
 
-            onButtonTap() {
-                console.log("Button was pressed");
+            addCustom() {
+                this.$navigateTo(addCustom);
+            },
+
+            help() {
+                this.$navigateTo(help);
             },
 
             newScenario() {

@@ -10,62 +10,35 @@
         <DockLayout width="100%" height="100%" backgroundColor="white"
             stretchLastChild="false">
 
-            <Label text="Prepared for anything scenarios" dock="top"
-                height="10%" backgroundColor="white" class="h2"
-                textAlignment="center" textDecoration="underline" />
+                <Label text="Prepared for anything scenarios" dock="top"
+                    height="10%" backgroundColor="white" class="h2"
+                    textAlignment="center" textDecoration="underline" />
 
-            <StackLayout dock="left" width="70%" backgroundColor="red"
-                orientation="vertical" backgroundColor="white">
+                <Button dock="left" text="Scenario 1" @tap="onButtonTap" width="65%"
+                    height="10%" class="my-scenarios-button" />
 
-                <Button text="Scenario 1" @tap="onButtonTap" width="90%"
-                    height="20%" class="my-scenarios-button" />
+                <GridLayout dock="right" width="100%" height="20%"
+                    columns="*, *, *" rows="*">
 
-                <Button text="Scenario 2" @tap="onButtonTap" width="90%"
-                    height="20%" class="my-scenarios-button" />
+                    <Image col="0" v-if="cloudVisible" :src="full_cloud" @tap="cloudFavourited" loadMode="async"
+                    stretch="aspectFit" height="20%" width="20%">
+                    </Image>
+                    <Image col="0" v-else :src="empty_cloud" @tap="cloudFavourited" loadMode="async"
+                        stretch="aspectFit" height="20%" width="20%">
+                    </Image>
 
-                <Button text="Scenario 3" @tap="onButtonTap" width="90%"
-                    height="20%" class="my-scenarios-button" />
+                    <Image col="1" :src="green_tick" loadMode="async"
+                        stretch="aspectFit" height="20%" width="20%">
+                    </Image>
 
-                <Button text="Scenario 4" @tap="onButtonTap" width="90%"
-                    height="20%" class="my-scenarios-button" />
-
-            </StackLayout>
-
-            <StackLayout dock="right" width="30%" backgroundColor="white"
-                orientation="vertical" backgroundColor="lightgray">
-
-                <GridLayout width="100%" height="20%" backgroundColor="purple"
-                    columns="*, *, *" rows="*" backgroundColor="purple">
-
-                    <Label text="Label 1" col="0" class="far" />
-                    <Label text="Label 2" col="1" backgroundColor="green" />
-                    <Label text="Label 3" col="2" backgroundColor="blue" />
-
+                    <Image col="2" v-if="starVisible" :src="full_star" @tap="starFavourited" loadMode="async"
+                    stretch="aspectFit" height="20%" width="20%">
+                    </Image>
+                    <Image col="2" v-else :src="empty_star" @tap="starFavourited" loadMode="async"
+                        stretch="aspectFit" height="20%" width="20%">
+                    </Image>
+    
                 </GridLayout>
-
-                <GridLayout width="100%" height="50" backgroundColor="purple"
-                    columns="*, *, *" rows="*" backgroundColor="purple">
-
-                    <Label text="Label 1" col="0" backgroundColor="red" />
-                    <Label text="Label 2" col="1" backgroundColor="green" />
-                    <Label text="Label 3" col="2" backgroundColor="blue" />
-                </GridLayout>
-                <GridLayout width="100%" height="50" backgroundColor="purple"
-                    columns="*, *, *" rows="*" backgroundColor="purple">
-
-                    <Label text="Label 1" col="0" backgroundColor="red" />
-                    <Label text="Label 2" col="1" backgroundColor="green" />
-                    <Label text="Label 3" col="2" backgroundColor="blue" />
-                </GridLayout>
-                <GridLayout width="100%" height="50" backgroundColor="purple"
-                    columns="*, *, *" rows="*" backgroundColor="purple">
-
-                    <Label text="Label 1" col="0" backgroundColor="red" />
-                    <Label text="Label 2" col="1" backgroundColor="green" />
-                    <Label text="Label 3" col="2" backgroundColor="blue" />
-                </GridLayout>
-            </StackLayout>
-
 
         </DockLayout>
 
@@ -75,53 +48,52 @@
 <script>
     import Vue from "nativescript-vue";
     import RadDataForm from "nativescript-ui-dataform/vue";
+    
     Vue.use(RadDataForm);
 
     export default {
         methods: {
+            cloudFavourited() {
+                this.cloudVisible = !this.cloudVisible
+            },
+            starFavourited() {
+                this.starVisible = !this.starVisible
+            },
             onButtonTap() {
                 console.log("Button was pressed");
-            }
+            },
+            toggleCheck() {
+                let checkBox = topmost().getViewById('yourCheckBoxId');
+                checkBox.toggle();
+            },
+            getCheckProp() {
+                let checkBox = topmost().getViewById('yourCheckBoxId');
+                console.log('checked prop value = ' + checkBox.checked);
+            },
         },
 
         data() {
-            return {
-                listPickerCountries: [
-                    "Australia",
-                    "Belgium",
-                    "Bulgaria",
-                    "Canada",
-                    "Switzerland",
-                    "China",
-                    "Czech Republic",
-                    "Germany",
-                    "Spain",
-                    "Ethiopia",
-                    "Croatia",
-                    "Hungary",
-                    "Italy",
-                    "Jamaica",
-                    "Romania",
-                    "Russia",
-                    "United States"
-                ],
-                selectedListPickerIndex: 0,
+            return { 
+                starVisible: true,
+                empty_star: '~/images/empty-star.png',
+                full_star: '~/images/full-star.png',
 
-                album: {
-                    bandName: "Ed Sheeran",
-                    albumName: "X",
-                    year: "2017",
-                    // owned: true,
-                    myRating: "9.5"
-                },
+                cloudVisible: true,
+                empty_cloud: '~/images/empty-cloud.png',
+                full_cloud: '~/images/full-cloud.png',
 
-                textFieldValue: ""
+                green_tick: '~/images/green-tick.png',
             };
         }
     };
 </script>
 
 <style>
+    .fav-button{
+        background-color: #FEF445; /* Green */
+        height: 10px;
+    }
+
     .far {
         font-family: "Font Awesome 5 Free", "fa-regular-400";
         font-weight: 400;
