@@ -2,7 +2,7 @@
     <Page>
         <ActionBar title="Prepared for anything" color="#0C3C60" />
 
-        <ScrollView>
+        <!-- <ScrollView>
 
             <StackLayout orientation="vertical" height="100%"
                 backgroundColor="white">
@@ -28,45 +28,43 @@
 
             </StackLayout>
 
-        </ScrollView>
+        </ScrollView> -->
 
         <BottomNavigation selectedIndex="1">
 
             <!-- The bottom tab UI is created via TabStrip (the containier) and TabStripItem (for each tab)-->
             <TabStrip>
                 <TabStripItem>
-                    <Label text="Home"></Label>
-                    <Image src="font://&#xf015;" class="fas t-36"></Image>
+                    <Label text="New Scenario" @tap="newScenario"></Label>
                 </TabStripItem>
                 <TabStripItem class="special">
                     <Label text="Account"></Label>
-                    <Image src="font://&#xf007;" class="fas t-36"></Image>
                 </TabStripItem>
                 <TabStripItem class="special">
                     <Label text="Search"></Label>
-                    <Image src="font://&#xf00e;" class="fas t-36"></Image>
                 </TabStripItem>
             </TabStrip>
 
             <!-- The number of TabContentItem components should corespond to the number of TabStripItem components -->
+            <!-- <TabContentItem>
+                <newScenario/>
+                <!-- <GridLayout>
+                    <Label text="Home Page"></Label>
+                </GridLayout> -->
+            </TabContentItem>
             <TabContentItem>
                 <GridLayout>
-                    <Label text="Home Page" class="h2 text-center"></Label>
+                    <Label text="Account Page"></Label>
                 </GridLayout>
             </TabContentItem>
             <TabContentItem>
                 <GridLayout>
-                    <Label text="Account Page" class="h2 text-center"></Label>
+                    <Label text="Search Page"></Label>
                 </GridLayout>
-            </TabContentItem>
-            <TabContentItem>
-                <GridLayout>
-                    <Label text="Search Page" class="h2 text-center"></Label>
-                </GridLayout>
-            </TabContentItem>
+            </TabContentItem> -->
 
         </BottomNavigation>
-        
+
     </Page>
 </template>
 

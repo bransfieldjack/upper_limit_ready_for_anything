@@ -1,6 +1,6 @@
 import Vue from 'nativescript-vue';
+
 import home from './components/home';
-import router from './router'
 
 // Uncommment the following to see NativeScript-Vue output logs
 Vue.config.silent = false;
@@ -17,7 +17,13 @@ Vue.registerElement(
   );
 
 new Vue({
-    router,
-    render: h => h('frame', [h(home)]), // <-- Main Frame in render app
-    
+
+    template: `
+        <Frame>
+            <home />
+        </Frame>`,
+
+    components: {
+        home
+    }
 }).$start();
