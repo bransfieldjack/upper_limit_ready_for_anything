@@ -2,7 +2,7 @@
 	<StackLayout backgroundColor="white" width="400" height="400">
 
         <Label class="h2 text-center" text="" />
-        <Button width="70%" height="30%" class="my-custom-scenarios-button" @tap="$modal.close()" />
+        <Button width="70%" height="30%" class="my-custom-scenarios-button" @tap="newCustomScenario" />
 
         <Label class="h2 text-center" text="" />
   
@@ -13,11 +13,19 @@
 </template>
 
 <script>
+import newCustomScenario from "./newCustomScenario";
+
 export default {
     data() {
         return {
             template: '~/images/template-icon.png',
         };
+    },
+    methods: {
+        newCustomScenario() {
+            this.$navigateTo(newCustomScenario);
+            this.$modal.close()
+        },
     }
 };
 </script>

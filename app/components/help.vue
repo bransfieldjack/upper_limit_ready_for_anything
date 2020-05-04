@@ -16,8 +16,6 @@
 </template>
 
 <script>
-    import newScenario from "./newScenario";
-    import myScenarios from "./myScenarios";
 
     export default {
         methods: {
@@ -30,13 +28,6 @@
                 console.log("Button was pressed");
             },
 
-            newScenario() {
-                this.$navigateTo(newScenario);
-            },
-
-			myScenarios() { 
-                this.$navigateTo(myScenarios);
-            },
         },
 
         data() {

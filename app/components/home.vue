@@ -1,7 +1,7 @@
 <template>
     <Page actionBarHidden="true">
 
-        <BottomNavigation selectedIndex="1">
+        <BottomNavigation>
 
             <!-- The bottom tab UI is created via TabStrip (the containier) and TabStripItem (for each tab)-->
             <TabStrip>
@@ -12,10 +12,15 @@
                 </TabStripItem>
 
                 <TabStripItem>
+                    <Label text="New Scenario"></Label>
+                    <Image :src="template_scenario" height="20%" width="20%"></Image>
+                </TabStripItem>
+
+                <TabStripItem>
                     <Label text="Favourites"></Label>
                     <Image :src="full_star" height="20%" width="20%"></Image>
                 </TabStripItem>
-          
+
                 <TabStripItem>
                     <Label text="Help"></Label>
                     <Image :src="help_icon" height="20%" width="20%"></Image>
@@ -39,10 +44,10 @@
                             <GridLayout dock="right" width="50%" height="20%"
                                 columns="*, *, *" rows="*">
 
-                                <Image col="0" v-if="cloudVisible" :src="full_cloud" @tap="cloudFavourited" loadMode="async"
+                                <Image col="0" :src="full_cloud" loadMode="async"
                                 stretch="aspectFit" height="20%" width="20%">
                                 </Image>
-                                <Image col="0" v-else :src="empty_cloud" @tap="cloudFavourited" loadMode="async"
+                                <Image col="0" :src="empty_cloud" loadMode="async"
                                     stretch="aspectFit" height="20%" width="20%">
                                 </Image>
 
@@ -50,10 +55,10 @@
                                     stretch="aspectFit" height="20%" width="20%">
                                 </Image>
 
-                                <Image col="2" v-if="starVisible" :src="full_star" @tap="starFavourited" loadMode="async"
+                                <Image col="2" :src="full_star" loadMode="async"
                                 stretch="aspectFit" height="20%" width="20%">
                                 </Image>
-                                <Image col="2" v-else :src="empty_star" @tap="starFavourited" loadMode="async"
+                                <Image col="2" :src="empty_star" loadMode="async"
                                     stretch="aspectFit" height="20%" width="20%">
                                 </Image>
                 
@@ -78,30 +83,49 @@
                         
             </TabContentItem>
 
-            <!-- <TabContentItem>
-            
-                <Image src="~/images/upper_limit_expand_png.png" loadMode="async"
-                    stretch="aspectFit" height="40%" width="50%">
-                </Image>
-          
-            <TabContentItem/> -->
-        
             <TabContentItem>
-                <StackLayout orientation="vertical" height="100%"
-                    backgroundColor="white">
-                    <Image src="~/images/upper_limit_expand_png.png" loadMode="async"
-                        stretch="aspectFit" height="40%" width="50%">
-                    </Image>
-                </StackLayout>
+                <ScrollView>
+                    <StackLayout backgroundColor="white" width="400" height="400">
+
+                        <Label class="h2 text-center" text="" />
+                        <Button width="70%" height="30%" class="my-custom-scenarios-button" @tap="newCustomScenario" />
+
+                        <Label class="h2 text-center" text="" />
+                
+                        <Button width="70%" height="30%" class="my-template-scenarios-button" @tap="$modal.close()" />
+                        <Label class="h2 text-center" text="" />
+
+                    </StackLayout>
+                </ScrollView>
             </TabContentItem>
 
+            <TabContentItem>
+                <ScrollView>
+                    <StackLayout backgroundColor="white" width="400" height="400">
+
+                        <Label class="h2 text-center" text="Favourites" />
+        
+                    </StackLayout>
+                </ScrollView>
+            </TabContentItem>
+
+            <TabContentItem>
+                <ScrollView>
+                    <StackLayout backgroundColor="white" width="400" height="400">
+
+                        <Label class="h2 text-center" text="Help" />
+        
+                    </StackLayout>
+                </ScrollView>
+            </TabContentItem>
+        
         </BottomNavigation>
 
     </Page>
 </template>
 
 <script>
-    import newScenario from "./newScenario";
+    import newCustomScenario from "./newCustomScenario";
     import myScenarios from "./myScenarios";
     import addCustom from "./addCustom";
     import help from "./help";
@@ -109,12 +133,14 @@
 
     export default {
         components: {
-            newScenario,
             myScenarios,
             addCustom,
             help
         },
         methods: {
+            newCustomScenario() {
+                this.$navigateTo(newCustomScenario);
+            },
             dialog(){
                 // var dialogs = require("tns-core-modules/ui/dialogs");
                 // // Second argument is optional.
@@ -137,10 +163,6 @@
 
             help() {
                 this.$navigateTo(help);
-            },
-
-            newScenario() {
-                this.$navigateTo(newScenario);
             },
 
 			myScenarios() { 
@@ -182,6 +204,7 @@
                         "image": '~/images/scenarios-icon.png'
                     }, 
                 ],
+                template_scenario: '~/images/template-icon.png',
                 scenario_title: 'You had no money ... ',
                 searchPhrase: "",
                 starVisible: true,
@@ -200,6 +223,44 @@
 </script>
 
 <style scoped>
+
+    .my-custom-scenarios-button {
+        position: absolute;
+        bottom: 5%;
+        width: 100%;
+        left: 0%;
+        background-image: url("~/images/custom-scenario.png");
+        background-size: 400px 300px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        android-elevation: 5;
+        background-color: white;
+        border-color: white;
+        border-radius: 20;
+        border-width: 1;
+        color: whitesmoke;
+        font-size: 18;
+        font-weight: bold;
+    }
+
+    .my-template-scenarios-button {
+        position: absolute;
+        bottom: 5%;
+        width: 100%;
+        left: 0%;
+        background-image: url("~/images/template-scenario.png");
+        background-size: 400px 300px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        android-elevation: 5;
+        background-color: white;
+        border-color: white;
+        border-radius: 20;
+        border-width: 1;
+        color: whitesmoke;
+        font-size: 18;
+        font-weight: bold;
+    }
 
     .cardStyle {
         android-elevation: 4;
