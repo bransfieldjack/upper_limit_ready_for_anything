@@ -1,67 +1,99 @@
 <template>
-    <Page>
-        <ActionBar title="Prepared for anything" color="#0C3C60" />
-
-        <!-- <ScrollView>
-
-            <StackLayout orientation="vertical" height="100%"
-                backgroundColor="white">
-
-                <Image src="~/images/upper_limit_expand_png.png" loadMode="async"
-                    stretch="aspectFit" height="40%" width="50%">
-                </Image>
-
-                <Button text="New Scenario" @tap="newScenario" width="80%"
-                    class="my-scenarios-button" height="60" />
-
-                <Button text="My Scenarios" @tap="myScenarios" width="60%"
-                    class="my-button" height="60" />
-
-                <Button text="Add Custom" @tap="newScenario" width="60%"
-                    class="my-button" height="60" />
-
-                <Button text="Help / how to" @tap="help" width="60%"
-                    class="my-button" height="60" />
-
-                <SearchBar hint="Search " width="100%" height="50"
-                    @submit="onSearchSubmit" />
-
-            </StackLayout>
-
-        </ScrollView> -->
+    <Page actionBarHidden="true">
 
         <BottomNavigation selectedIndex="1">
 
             <!-- The bottom tab UI is created via TabStrip (the containier) and TabStripItem (for each tab)-->
             <TabStrip>
+
                 <TabStripItem>
-                    <Label text="New Scenario" @tap="newScenario"></Label>
+                    <Label text="Scenarios"></Label>
+                    <Image :src="scenarios_icon" height="20%" width="20%"></Image>
                 </TabStripItem>
-                <TabStripItem class="special">
-                    <Label text="Account"></Label>
+
+                <TabStripItem>
+                    <Label text="Favourites"></Label>
+                    <Image :src="full_star" height="20%" width="20%"></Image>
                 </TabStripItem>
-                <TabStripItem class="special">
-                    <Label text="Search"></Label>
+          
+                <TabStripItem>
+                    <Label text="Help"></Label>
+                    <Image :src="help_icon" height="20%" width="20%"></Image>
                 </TabStripItem>
+
             </TabStrip>
 
-            <!-- The number of TabContentItem components should corespond to the number of TabStripItem components -->
+            <!-- Scenarios page, includes add a new scnearion nav button -->
+            <TabContentItem>
+
+                <ScrollView>
+                    <StackLayout class="home-panel">
+
+                    <CardView v-for="item in scenarioObjects" class="cardStyle" margin="10" elevation="40" radius="5" ios:shadowRadius="3" @tap="cardTapped">
+                        <StackLayout class="card-layout">
+                            <Label text="" textAlignment="center"/>
+                            <Image :src="item.image" height="20%" width="20%"/>
+                            <Label class="h2" :text="item.text" textAlignment="center"/>
+                            <Label text="" textAlignment="center"/>
+
+                            <GridLayout dock="right" width="50%" height="20%"
+                                columns="*, *, *" rows="*">
+
+                                <Image col="0" v-if="cloudVisible" :src="full_cloud" @tap="cloudFavourited" loadMode="async"
+                                stretch="aspectFit" height="20%" width="20%">
+                                </Image>
+                                <Image col="0" v-else :src="empty_cloud" @tap="cloudFavourited" loadMode="async"
+                                    stretch="aspectFit" height="20%" width="20%">
+                                </Image>
+
+                                <Image col="1" :src="green_tick" loadMode="async"
+                                    stretch="aspectFit" height="20%" width="20%">
+                                </Image>
+
+                                <Image col="2" v-if="starVisible" :src="full_star" @tap="starFavourited" loadMode="async"
+                                stretch="aspectFit" height="20%" width="20%">
+                                </Image>
+                                <Image col="2" v-else :src="empty_star" @tap="starFavourited" loadMode="async"
+                                    stretch="aspectFit" height="20%" width="20%">
+                                </Image>
+                
+                            </GridLayout>
+
+                            <Label text="" textAlignment="center"/>
+
+                        </StackLayout>
+                    </CardView>
+
+                    <Fab 
+                        @tap="dialog"
+                        height="15%" width="15%"
+                        :icon="plus_icon"
+                        rippleColor="#FAC710"
+                        class="fab-button"
+                    ></Fab>
+                    
+
+                    </StackLayout>
+                </ScrollView>
+                        
+            </TabContentItem>
+
             <!-- <TabContentItem>
-                <newScenario/>
-                <!-- <GridLayout>
-                    <Label text="Home Page"></Label>
-                </GridLayout> -->
-            </TabContentItem>
+            
+                <Image src="~/images/upper_limit_expand_png.png" loadMode="async"
+                    stretch="aspectFit" height="40%" width="50%">
+                </Image>
+          
+            <TabContentItem/> -->
+        
             <TabContentItem>
-                <GridLayout>
-                    <Label text="Account Page"></Label>
-                </GridLayout>
+                <StackLayout orientation="vertical" height="100%"
+                    backgroundColor="white">
+                    <Image src="~/images/upper_limit_expand_png.png" loadMode="async"
+                        stretch="aspectFit" height="40%" width="50%">
+                    </Image>
+                </StackLayout>
             </TabContentItem>
-            <TabContentItem>
-                <GridLayout>
-                    <Label text="Search Page"></Label>
-                </GridLayout>
-            </TabContentItem> -->
 
         </BottomNavigation>
 
@@ -73,9 +105,27 @@
     import myScenarios from "./myScenarios";
     import addCustom from "./addCustom";
     import help from "./help";
+    import ModalComponent from "./ModalComponent";  
 
     export default {
+        components: {
+            newScenario,
+            myScenarios,
+            addCustom,
+            help
+        },
         methods: {
+            dialog(){
+                // var dialogs = require("tns-core-modules/ui/dialogs");
+                // // Second argument is optional.
+                // dialogs.prompt("Your message", "Default text").then(function (r) {
+                //     console.log("Dialog result: " + r.result + ", text: " + r.text);
+                // });
+                this.$showModal(ModalComponent);
+            },
+            cardTapped() {
+                console.log("Card tapped. ")
+            },
             onSearchSubmit(args) {
                 let searchBar = args.object;
                 console.log("You are searching for " + searchBar.text);
@@ -100,13 +150,88 @@
 
         data() {
             return {
-                searchPhrase: ""
+                scenarioObjects: [
+                    {
+                        "text": 'You had no money ... ', 
+                        "full_cloud": '~/images/full-cloud.png', 
+                        "green_tick": '~/images/green-tick.png', 
+                        "image": '~/images/scenarios-icon.png'
+                    }, 
+                    {
+                        "text": 'You had no money ... ', 
+                        "full_cloud": '~/images/full-cloud.png', 
+                        "green_tick": '~/images/green-tick.png', 
+                        "image": '~/images/scenarios-icon.png'
+                    }, 
+                    {
+                        "text": 'You had no money ... ', 
+                        "full_cloud": '~/images/full-cloud.png', 
+                        "green_tick": '~/images/green-tick.png', 
+                        "image": '~/images/scenarios-icon.png'
+                    }, 
+                    {
+                        "text": 'You had no money ... ', 
+                        "full_cloud": '~/images/full-cloud.png', 
+                        "green_tick": '~/images/green-tick.png', 
+                        "image": '~/images/scenarios-icon.png'
+                    }, 
+                    {
+                        "text": 'You had no money ... ', 
+                        "full_cloud": '~/images/full-cloud.png', 
+                        "green_tick": '~/images/green-tick.png', 
+                        "image": '~/images/scenarios-icon.png'
+                    }, 
+                ],
+                scenario_title: 'You had no money ... ',
+                searchPhrase: "",
+                starVisible: true,
+                empty_star: '~/images/empty-star.png',
+                full_star: '~/images/full-star.png',
+                plus_icon: '~/images/new-icon.png',
+                scenarios_icon: '~/images/scenarios-icon.png',
+                help_icon: '~/images/help-icon.png',
+                cloudVisible: true,
+                empty_cloud: '~/images/empty-cloud.png',
+                full_cloud: '~/images/full-cloud.png',
+                green_tick: '~/images/green-tick.png',
             };
         }
     };
 </script>
 
 <style scoped>
+
+    .cardStyle {
+        android-elevation: 4;
+        background-color: white;
+        border-color: white;
+        border-radius: 20;
+        border-width: 1;
+        color: whitesmoke;
+        font-size: 18;
+        font-weight: bold;
+    }
+
+    .cardStyle:active {
+        android-elevation: 8;
+        background-color: whitesmoke;
+        border-color: white;
+        border-radius: 20;
+        border-width: 1;
+        color: lightseagreen;
+        font-size: 18;
+        font-weight: bold;
+    }
+
+    .fab-button {
+        height: 100;
+        width: 100; 
+        margin: 20;
+        background-color: #F9921C;
+        horizontal-align: right;
+        vertical-align: bottom;
+    }
+
     .home-panel {
         vertical-align: center;
         font-size: 20;
