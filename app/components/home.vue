@@ -34,19 +34,21 @@
                 <ScrollView>
                     <StackLayout class="home-panel">
 
-                    <CardView v-for="item in this.$store.state.data" class="cardStyle" margin="10" elevation="40" radius="5" ios:shadowRadius="3" @tap="cardTapped">
+                    <CardView v-for="item in this.$store.state.data" class="cardStyle" margin="10" elevation="40" radius="5" ios:shadowRadius="3">
                         <StackLayout class="card-layout">
                             <Label text="" textAlignment="center"/>
 
                             <GridLayout width="100%" height="20%"
                                 columns="*, *, *, *, *, *, *, *, *, *" rows="*">
 
-                            <Image :src="delete_icon" loadMode="async" height="8%" width="8%" col="1" row="0" @tap="delete_record(item.id)">
-                            </Image>
-                            <Image v-if="item.favourite == 'true'" :src="full_star" loadMode="async" height="8%" width="8%" col="8" row="0" @tap="make_favourite(item.id)">
-                            </Image>
-                            <Image v-else :src="empty_star" loadMode="async" height="8%" width="8%" col="8" row="0" @tap="make_favourite(item.id)">
-                            </Image>
+                                <Image :src="delete_icon" loadMode="async" height="8%" width="8%" col="1" row="0" @tap="delete_record(item.id)">
+                                </Image>
+
+                                <Image v-if="item.favourite == 'true'" :src="full_star" loadMode="async" height="8%" width="8%" col="8" row="0" @tap="make_favourite(item.id)">
+                                </Image>
+
+                                <Image v-else :src="empty_star" loadMode="async" height="8%" width="8%" col="8" row="0" @tap="make_favourite(item.id)">
+                                </Image>                                
 
                             </GridLayout>
 
@@ -54,16 +56,21 @@
                             <Image v-if="item.custom" :src="custom_scenario_icon" height="40%" width="40%"/>
                             <Image v-else :src="template_scenario_icon" height="40%" width="40%"/>
                             <Label class="h2" v-bind:text="item.title" textAlignment="center" textWrap="true"/>
+                            
                             <Label text="" textAlignment="center"/>
 
-                            <GridLayout width="40%" height="20%"
-                                columns="*, *, *" rows="*">
+                            <GridLayout width="80%" height="30%"
+                                columns="*, *, *, *, *, *, *, *" rows="*">
 
-                                <Image col="1" v-if="item.inprogress == 'true'" :src="full_cloud" loadMode="async"
+                                <Image col="5" v-if="item.inprogress == 'true'" :src="full_cloud" loadMode="async"
                                 stretch="aspectFit" height="30%" width="30%">
                                 </Image>
-                                <Image col="1" v-else :src="green_tick" loadMode="async"
+                                <Image col="5" v-else :src="green_tick" loadMode="async"
                                     stretch="aspectFit" height="30%" width="30%">
+                                </Image>
+
+                                <Image col="8" :src="open_scenario" loadMode="async"
+                                    stretch="aspectFit" height="30%" width="30%" @tap="cardTapped(id)">
                                 </Image>
 
                             </GridLayout>
@@ -103,13 +110,53 @@
             </TabContentItem>
 
             <TabContentItem>
+
                 <ScrollView>
+
+                    <StackLayout class="home-panel">
+
+                    <CardView v-for="item in this.$store.state.data" v-if="item.favourite == 'true'" class="cardStyle" margin="10" elevation="40" radius="5" ios:shadowRadius="3">
+                        <StackLayout class="card-layout" >
+                            <Label text="" textAlignment="center"/>
+
+                            <GridLayout width="100%" height="20%"
+                                columns="*, *, *, *, *, *, *, *, *, *" rows="*">
+
+                            </GridLayout>
+
+                            <Label text="" textAlignment="center"/>
+                            <Image v-if="item.custom" :src="custom_scenario_icon" height="40%" width="40%"/>
+                            <Image v-else :src="template_scenario_icon" height="40%" width="40%"/>
+                            <Label class="h2" v-bind:text="item.title" textAlignment="center" textWrap="true"/>
+                            <Label text="" textAlignment="center"/>
+
+                            <GridLayout width="40%" height="20%" @tap="cardTapped"
+                                columns="*, *, *" rows="*">
+
+                                <Image col="1" v-if="item.inprogress == 'true'" :src="full_cloud" loadMode="async"
+                                stretch="aspectFit" height="30%" width="30%">
+                                </Image>
+                                <Image col="1" v-else :src="green_tick" loadMode="async"
+                                    stretch="aspectFit" height="30%" width="30%">
+                                </Image>
+
+                            </GridLayout>
+
+                            <Label text="" textAlignment="center"/>
+
+                        </StackLayout>
+                    </CardView>
+                    
+                    </StackLayout>
+                </ScrollView>
+
+                <!-- <ScrollView>
                     <StackLayout backgroundColor="white" width="400" height="400">
 
                         <Label class="h2 text-center" text="Favourites" />
         
                     </StackLayout>
-                </ScrollView>
+                </ScrollView> -->
             </TabContentItem>
 
             <TabContentItem>
@@ -133,6 +180,7 @@
     import addCustom from "./addCustom";
     import help from "./help";
     import ModalComponent from "./ModalComponent";  
+    import editScenario from "./editScenario";
 
     const Sqlite = require("nativescript-sqlite");
 
@@ -173,51 +221,6 @@
                     this.load();
 
                 });
-
-                // new Sqlite("my.db").then(db => {
-
-                //     db.all('update custom_templates set favourite="true" where id=?', [event], function(err, table) {
-                //     console.log(table);
-                //     });                    
-
-                //     this.$store.dispatch("init");
-                //     this.load();
-
-                // });
-
-                // if (this.favourite_button_logic.value == true){
-
-                //     const Sqlite = require("nativescript-sqlite");
-
-                //     new Sqlite("my.db").then(db => {
-
-                //         db.all('update custom_templates set favourite="true" where id=?', [event], function(err, table) {
-                //         console.log(table);
-                //         console.log("favourite set to true")
-                //         });
-
-                //         this.$store.dispatch("init");
-                //         this.load();
-
-                //     });
-                // }
-
-                // if (this.favourite_button_logic.value == false){
-
-                //     const Sqlite = require("nativescript-sqlite");
-
-                //     new Sqlite("my.db").then(db => {
-
-                //         db.all('update custom_templates set favourite="false" where id=?', [event], function(err, table) {
-                //         console.log(table);
-                //         console.log("favourite set to false")
-                //         });
-
-                //         this.$store.dispatch("init");
-                //         this.load();
-
-                //     });
-                // }
 
             },
             delete_record(event) {
@@ -277,13 +280,21 @@
             dialog(){
                 this.$showModal(ModalComponent);
             },
-            cardTapped() {
+            cardTapped(id) {
+                this.$navigateTo(editScenario, {
+                    transition: {
+                        name:'fade',
+                        duration: 200
+                    },
+                    props: {
+                        id: id
+                    }
+                });
             },
             onSearchSubmit(args) {
                 let searchBar = args.object;
                 console.log("You are searching for " + searchBar.text);
             },
-
             addCustom() {
                 this.$navigateTo(addCustom);
             },
@@ -291,7 +302,6 @@
             help() {
                 this.$navigateTo(help);
             },
-
 			myScenarios() { 
                 this.$navigateTo(myScenarios);
             },
@@ -335,6 +345,7 @@
                 empty_cloud: '~/images/empty-cloud.png',
                 full_cloud: '~/images/full-cloud.png',
                 green_tick: '~/images/green-tick.png',
+                open_scenario: '~/images/open-scenario.png',
             };
         }
     };
