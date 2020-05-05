@@ -54,13 +54,16 @@ const store = new Vuex.Store({
 
         for(var i = 0; i < data.data.length; i++) {
             state.data.push({
-                title: data.data[i][0],
-                structures: data.data[i][1],
-                processes: data.data[i][2],
-                communication: data.data[i][3],
-                people: data.data[i][4],
-                anything_else: data.data[i][5],
-                custom: data.data[i][6],
+                id: data.data[i][0],
+                title: data.data[i][1],
+                structures: data.data[i][2],
+                processes: data.data[i][3],
+                communication: data.data[i][4],
+                people: data.data[i][5],
+                anything_else: data.data[i][6],
+                custom: data.data[i][7],
+                favourite: data.data[i][8],
+                inprogress: data.data[i][9],
             });
         }
 
@@ -75,6 +78,8 @@ const store = new Vuex.Store({
           people: data.data.people,
           anything_else: data.data.anything_else,
           custom: data.data.custom,
+          favourite: data.data.favourite,
+          inprogress: data.data.inprogress,
         });
     },
 
@@ -84,7 +89,7 @@ const store = new Vuex.Store({
 
     init(context) { // open a database and execute a query for creating a table.
         (new Sqlite("my.db")).then(db => {
-            db.execSQL("CREATE TABLE IF NOT EXISTS custom_templates (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, structures TEXT, processes TEXT, communication TEXT, people TEXT, anything_else TEXT, custom BOOLEAN)").then(id => {
+            db.execSQL("CREATE TABLE IF NOT EXISTS custom_templates (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, structures TEXT, processes TEXT, communication TEXT, people TEXT, anything_else TEXT, custom BOOLEAN, favourite BOOLEAN, inprogress BOOLEAN)").then(id => {
                 context.commit("init", { database: db }); // the open database is passed to the mutation via the commit method.
             }, error => {
                 console.log("CREATE TABLE ERROR", error);
@@ -95,7 +100,7 @@ const store = new Vuex.Store({
     },
 
     insert(context, data) { // When inserting information, data is passed to the insert action and a query is executed.
-        context.state.database.execSQL("INSERT INTO custom_templates (title, structures, processes, communication, people, anything_else, custom) VALUES (?, ?, ?, ?, ?, ?, ?)", [data.title, data.structures, data.processes, data.communication, data.people, data.anything_else, data.custom]).then(id => {  // context.state.database variable is the open database in the state variables section.
+        context.state.database.execSQL("INSERT INTO custom_templates (title, structures, processes, communication, people, anything_else, custom, favourite, inprogress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [data.title, data.structures, data.processes, data.communication, data.people, data.anything_else, data.custom, data.favourite, data.inprogress]).then(id => {  // context.state.database variable is the open database in the state variables section.
             context.commit("save", { data: data });
         }, error => {
             console.log("INSERT ERROR", error);
@@ -103,7 +108,7 @@ const store = new Vuex.Store({
     },
 
     query(context) {
-        context.state.database.all("SELECT * FROM custom_templates", []).then(result => {
+        context.state.database.all("SELECT id, title, structures, processes, communication, people, anything_else, custom, favourite, inprogress FROM custom_templates", []).then(result => {
             context.commit("load", { data: result });
         }, error => {
             console.log("SELECT ERROR", error);

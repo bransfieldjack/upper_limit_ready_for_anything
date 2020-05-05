@@ -65,13 +65,13 @@
                     </GridLayout>
                 </StackLayout>
 
-                <ListView for="item in store_data" class="list-group" row="1" col="0">
+                <!-- <ListView for="item in store_data" class="list-group" row="1" col="0"> // Test block to view data.
                     <v-template>
                         <StackLayout class="list-group-item">
                             <Label v-bind:text="item.title" />
                         </StackLayout>
                     </v-template>
-                </ListView>
+                </ListView> -->
 
             </StackLayout>
 
@@ -101,7 +101,9 @@
                     "communication": "",
                     "people": "",
                     "anything_else": "",
-                    "custom": true
+                    "custom": true,
+                    "favourite": false,
+                    "inprogress": true,
                 },
 
                 input: {
@@ -110,22 +112,34 @@
                 },
             };
         },
+        computed: {
+            completed: function() {
+
+                const data = Object.keys(this.scenario).every(field => {
+                    return this.scenario[field];
+                });
+
+                console.log(data);
+                
+            },  
+        },
         methods: {
             save() {
-                this.$store.dispatch("insert", this.input);
+                this.$store.dispatch("insert", this.scenario);
+                this.$navigateTo(home);
             },
             load() {
                 this.$store.dispatch("query");
             },
             clear() {
-                this.input.firstname = "";
-                this.input.lastname = "";
+                this.scenario.title = "";
+                this.scenario.structures = "";
+                this.scenario.processes = "";
+                this.scenario.communication = "";
+                this.scenario.people = "";
+                this.scenario.anything_else = "";
+                this.scenario.custom = true;
             },
-            // save() {
-            //     this.$store.dispatch("insert", this.scenario);
-            //     const result = this.$store.dispatch("query");
-            //     console.log(result)
-            // },
             myScenarios() { 
                 this.$navigateTo(myScenarios);
             },

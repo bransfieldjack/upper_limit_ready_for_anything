@@ -34,34 +34,38 @@
                 <ScrollView>
                     <StackLayout class="home-panel">
 
-                    <CardView v-for="item in scenarioObjects" class="cardStyle" margin="10" elevation="40" radius="5" ios:shadowRadius="3" @tap="cardTapped">
+                    <CardView v-for="item in this.$store.state.data" class="cardStyle" margin="10" elevation="40" radius="5" ios:shadowRadius="3" @tap="cardTapped">
                         <StackLayout class="card-layout">
                             <Label text="" textAlignment="center"/>
-                            <Image :src="item.image" height="20%" width="20%"/>
-                            <Label class="h2" :text="item.text" textAlignment="center"/>
+
+                            <GridLayout width="100%" height="20%"
+                                columns="*, *, *, *, *, *, *, *, *, *" rows="*">
+
+                            <Image :src="delete_icon" loadMode="async" height="8%" width="8%" col="1" row="0" @tap="delete_record(item.id)">
+                            </Image>
+                            <Image v-if="item.favourite == 'true'" :src="full_star" loadMode="async" height="8%" width="8%" col="8" row="0" @tap="make_favourite(item.id)">
+                            </Image>
+                            <Image v-else :src="empty_star" loadMode="async" height="8%" width="8%" col="8" row="0" @tap="make_favourite(item.id)">
+                            </Image>
+
+                            </GridLayout>
+
+                            <Label text="" textAlignment="center"/>
+                            <Image v-if="item.custom" :src="custom_scenario_icon" height="40%" width="40%"/>
+                            <Image v-else :src="template_scenario_icon" height="40%" width="40%"/>
+                            <Label class="h2" v-bind:text="item.title" textAlignment="center" textWrap="true"/>
                             <Label text="" textAlignment="center"/>
 
-                            <GridLayout dock="right" width="50%" height="20%"
+                            <GridLayout width="40%" height="20%"
                                 columns="*, *, *" rows="*">
 
-                                <Image col="0" :src="full_cloud" loadMode="async"
-                                stretch="aspectFit" height="20%" width="20%">
+                                <Image col="1" v-if="item.inprogress == 'true'" :src="full_cloud" loadMode="async"
+                                stretch="aspectFit" height="30%" width="30%">
                                 </Image>
-                                <Image col="0" :src="empty_cloud" loadMode="async"
-                                    stretch="aspectFit" height="20%" width="20%">
-                                </Image>
-
-                                <Image col="1" :src="green_tick" loadMode="async"
-                                    stretch="aspectFit" height="20%" width="20%">
+                                <Image col="1" v-else :src="green_tick" loadMode="async"
+                                    stretch="aspectFit" height="30%" width="30%">
                                 </Image>
 
-                                <Image col="2" :src="full_star" loadMode="async"
-                                stretch="aspectFit" height="20%" width="20%">
-                                </Image>
-                                <Image col="2" :src="empty_star" loadMode="async"
-                                    stretch="aspectFit" height="20%" width="20%">
-                                </Image>
-                
                             </GridLayout>
 
                             <Label text="" textAlignment="center"/>
@@ -77,7 +81,6 @@
                         class="fab-button"
                     ></Fab>
                     
-
                     </StackLayout>
                 </ScrollView>
                         
@@ -131,6 +134,8 @@
     import help from "./help";
     import ModalComponent from "./ModalComponent";  
 
+    const Sqlite = require("nativescript-sqlite");
+
     export default {
         components: {
             myScenarios,
@@ -138,19 +143,141 @@
             help
         },
         methods: {
+            make_favourite(event) {
+
+                const Sqlite = require("nativescript-sqlite");
+
+                new Sqlite("my.db").then(db => {
+
+                    db.all('select favourite from custom_templates where id=?', [event], function(err, table) {
+                        // console.log(table[0][0]);
+                        if (table[0][0] == 'true'){
+                            db.all('update custom_templates set favourite="false" where id=?', [event], function(err, table) {
+                                console.log(table);
+                                this.$store.dispatch("init");
+                                this.load();
+                            });                    
+                        }
+                        else if (table[0][0] == 'false'){
+                            db.all('update custom_templates set favourite="true" where id=?', [event], function(err, table) {
+                                console.log(table);
+                                this.$store.dispatch("init");
+                                this.load();
+                            });       
+                        }
+
+
+                    });                    
+
+                    this.$store.dispatch("init");
+                    this.load();
+
+                });
+
+                // new Sqlite("my.db").then(db => {
+
+                //     db.all('update custom_templates set favourite="true" where id=?', [event], function(err, table) {
+                //     console.log(table);
+                //     });                    
+
+                //     this.$store.dispatch("init");
+                //     this.load();
+
+                // });
+
+                // if (this.favourite_button_logic.value == true){
+
+                //     const Sqlite = require("nativescript-sqlite");
+
+                //     new Sqlite("my.db").then(db => {
+
+                //         db.all('update custom_templates set favourite="true" where id=?', [event], function(err, table) {
+                //         console.log(table);
+                //         console.log("favourite set to true")
+                //         });
+
+                //         this.$store.dispatch("init");
+                //         this.load();
+
+                //     });
+                // }
+
+                // if (this.favourite_button_logic.value == false){
+
+                //     const Sqlite = require("nativescript-sqlite");
+
+                //     new Sqlite("my.db").then(db => {
+
+                //         db.all('update custom_templates set favourite="false" where id=?', [event], function(err, table) {
+                //         console.log(table);
+                //         console.log("favourite set to false")
+                //         });
+
+                //         this.$store.dispatch("init");
+                //         this.load();
+
+                //     });
+                // }
+
+            },
+            delete_record(event) {
+
+                const id = event;
+                this.selected_id.id = id;
+        
+                var dialogs = require("tns-core-modules/ui/dialogs");
+                
+                const actionOptions = {
+                    message: "Are you sure you want to delete this scenario?",
+                    cancelButtonText: "Cancel",
+                    actions: ["Yes", "No"],
+                    state: this.$store.state.data,
+                    id: id,
+                    cancelable: true // Android only
+                };
+
+                action(actionOptions).then((result) => {
+
+                    console.log("Dialog result: ", result);
+
+                    if (result == "Yes") {
+
+                        const Sqlite = require("nativescript-sqlite");
+
+                        new Sqlite("my.db").then(db => {
+
+                            db.all('delete from custom_templates where id=?', [this.selected_id.id], function(err, table) {
+                            console.log(table);
+                            console.log("record deleted")
+                            });
+
+                            // db.all('select * from custom_templates', function(err, table) {
+                            // console.log(table);
+                            // console.log("record deleted")
+                            // });
+
+                            this.$store.dispatch("init");
+                            this.load();
+
+                        });
+
+                    } else if (result == "No") {
+
+                        this.selected_id = null;
+
+                    }
+                });
+
+            },
+            state_print(){
+            },
             newCustomScenario() {
                 this.$navigateTo(newCustomScenario);
             },
             dialog(){
-                // var dialogs = require("tns-core-modules/ui/dialogs");
-                // // Second argument is optional.
-                // dialogs.prompt("Your message", "Default text").then(function (r) {
-                //     console.log("Dialog result: " + r.result + ", text: " + r.text);
-                // });
                 this.$showModal(ModalComponent);
             },
             cardTapped() {
-                console.log("Card tapped. ")
             },
             onSearchSubmit(args) {
                 let searchBar = args.object;
@@ -168,42 +295,33 @@
 			myScenarios() { 
                 this.$navigateTo(myScenarios);
             },
+            load() {
+                this.$store.dispatch("query");
+            },
+            delete() {
+                this.$store.dispatch("delete", this.selected_id.id);
+            },
+        },
+
+        mounted() {
+            this.load();
         },
 
         data() {
             return {
-                scenarioObjects: [
-                    {
-                        "text": 'You had no money ... ', 
-                        "full_cloud": '~/images/full-cloud.png', 
-                        "green_tick": '~/images/green-tick.png', 
-                        "image": '~/images/scenarios-icon.png'
-                    }, 
-                    {
-                        "text": 'You had no money ... ', 
-                        "full_cloud": '~/images/full-cloud.png', 
-                        "green_tick": '~/images/green-tick.png', 
-                        "image": '~/images/scenarios-icon.png'
-                    }, 
-                    {
-                        "text": 'You had no money ... ', 
-                        "full_cloud": '~/images/full-cloud.png', 
-                        "green_tick": '~/images/green-tick.png', 
-                        "image": '~/images/scenarios-icon.png'
-                    }, 
-                    {
-                        "text": 'You had no money ... ', 
-                        "full_cloud": '~/images/full-cloud.png', 
-                        "green_tick": '~/images/green-tick.png', 
-                        "image": '~/images/scenarios-icon.png'
-                    }, 
-                    {
-                        "text": 'You had no money ... ', 
-                        "full_cloud": '~/images/full-cloud.png', 
-                        "green_tick": '~/images/green-tick.png', 
-                        "image": '~/images/scenarios-icon.png'
-                    }, 
-                ],
+                favourite_button_logic: {
+                    type: Boolean,
+                    id: null,
+                    default: false,
+                    value: false,
+                },
+                selected_id: {
+                    id: null,
+                },
+                custom_scenario_icon: "~/images/custom-scenario.png",
+                template_scenario_icon: "~/images/template-scenario.png",
+                card_image: '~/images/scenarios-icon.png',
+                delete_icon: '~/images/delete_icon.png',
                 template_scenario: '~/images/template-icon.png',
                 scenario_title: 'You had no money ... ',
                 searchPhrase: "",
@@ -223,6 +341,10 @@
 </script>
 
 <style scoped>
+
+    .delete-icon {
+        padding-right: 50px;
+    }
 
     .my-custom-scenarios-button {
         position: absolute;
