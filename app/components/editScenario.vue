@@ -5,10 +5,10 @@
             <NavigationButton text="Go back" android.systemIcon="ic_menu_back" @tap="this.$navigateBack" />
         </ActionBar>
 
-        <ScrollView v-for="item in this.$store.state.data">
+        <ScrollView>
 
             
-            <StackLayout class="form">
+            <StackLayout class="form" v-for="item in this.$store.state.data" v-if="item.id == id">
 
                 <Label text="" textAlignment="center"/>
 
@@ -16,10 +16,12 @@
 
                 <Label text="" textAlignment="center"/>
 
-                <Label text={{id}} class="h2" textAlignment="left"/>
+                <Label :text="item.title" class="h2" textAlignment="left"/>
+
+                <!-- <Label text="Title" class="h2" textAlignment="left"/> -->
 
                 <StackLayout class="input-field">
-                    <TextField v-model="scenario.title" class="input"></TextField>
+                    <TextField v-model="item.title" class="input"></TextField>
                 </StackLayout>
 
                 <Label text="" textAlignment="center"/>
@@ -29,31 +31,31 @@
                 <Label text="" textAlignment="center"/>
 
                 <StackLayout class="input-field">
-                    <TextField v-model="scenario.structures" hint="The Physical Structures (premises, equipment, etc.)" class="input"></TextField>
+                    <TextField v-model="item.structures" hint="The Physical Structures (premises, equipment, etc.)" class="input"></TextField>
                 </StackLayout>
 
                 <Label text="" textAlignment="center"/>
 
                 <StackLayout class="input-field">
-                    <TextField v-model="scenario.processes" hint="Processes / Systems:" class="input"></TextField>
+                    <TextField v-model="item.processes" hint="Processes / Systems:" class="input"></TextField>
                 </StackLayout>
 
                 <Label text="" textAlignment="center"/>
 
                 <StackLayout class="input-field">
-                    <TextField v-model="scenario.communication" hint="Communication:" class="input"></TextField>
+                    <TextField v-model="item.communication" hint="Communication:" class="input"></TextField>
                 </StackLayout>
 
                 <Label text="" textAlignment="center"/>
 
                 <StackLayout class="input-field">
-                    <TextField v-model="scenario.people" hint="People:" class="input"></TextField>
+                    <TextField v-model="item.people" hint="People:" class="input"></TextField>
                 </StackLayout>
 
                 <Label text="" textAlignment="center"/>
 
                 <StackLayout class="input-field">
-                    <TextField v-model="scenario.anything_else" hint="Anything else?" class="input"></TextField>
+                    <TextField v-model="item.anything_else" hint="Anything else?" class="input"></TextField>
                 </StackLayout>
 
                 <Label text="" textAlignment="center"/>
@@ -64,14 +66,6 @@
                         <Button row="0" col="1" width="60%" height="30%" class="home-button" @tap="home" />
                     </GridLayout>
                 </StackLayout>
-
-                <!-- <ListView for="item in store_data" class="list-group" row="1" col="0"> // Test block to view data.
-                    <v-template>
-                        <StackLayout class="list-group-item">
-                            <Label v-bind:text="item.title" />
-                        </StackLayout>
-                    </v-template>
-                </ListView> -->
 
             </StackLayout>
 
@@ -94,6 +88,7 @@
         data() {
             return {
                 store_data: this.$store.state.data,
+                test_scenario: null,
                 scenario: {
                     "title": "",
                     "structures": "",
@@ -105,13 +100,9 @@
                     "favourite": false,
                     "inprogress": true,
                 },
-
-                input: {
-                    firstname: "jack",
-                    lastname: "bransfield"
-                },
             };
         },
+        props: ['id'],
         computed: {
             completed: function() {
 
@@ -130,6 +121,7 @@
             },
             load() {
                 this.$store.dispatch("query");
+                this.test_scenario = this.$store.dispatch("query");
             },
             clear() {
                 this.scenario.title = "";
@@ -145,9 +137,49 @@
             },
             home() {
                 console.log(this.$store.state.data)
-                // console.log(this.$store.dispatch("query")); 
-                // this.$navigateTo(home);
             },
+        },
+        mounted(){
+            const id = this.$props.id;
+
+            this.load();
+
+            var x; 
+
+            // for(x in this.$store.state.data){
+                
+            // }
+
+            this.test_scenario = this.$store.state.data.findIndex(x => x.id === id);
+
+            console.log(this.test_scenario)
+            // getNameById (id) {
+            // return axios.get('/names/?ids=' + id)
+            //     .then(response => {
+            //         this.response = response.data
+            //         return this.response[0].name
+            //     })
+            // }
+            
+            // const Sqlite = require("nativescript-sqlite");
+
+            // var item = new Sqlite("my.db", function(db){
+            //     result = db.all('select * from custom_templates where id=?', [this.$props.id]) 
+            //     return result;
+            // });
+
+            // // this.$store.dispatch("init");
+            // // this.load();
+
+            // console.log("test:");
+            // console.log(item);
+
+            // var j;
+
+            // for(j in item){
+            //     console.log(j);
+            // }
+
         },
     };
 </script>

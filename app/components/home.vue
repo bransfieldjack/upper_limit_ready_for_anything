@@ -70,7 +70,7 @@
                                 </Image>
 
                                 <Image col="8" :src="open_scenario" loadMode="async"
-                                    stretch="aspectFit" height="30%" width="30%" @tap="cardTapped(id)">
+                                    stretch="aspectFit" height="30%" width="30%" @tap="cardTapped(item.id)">
                                 </Image>
 
                             </GridLayout>
@@ -282,12 +282,8 @@
             },
             cardTapped(id) {
                 this.$navigateTo(editScenario, {
-                    transition: {
-                        name:'fade',
-                        duration: 200
-                    },
                     props: {
-                        id: id
+                        id: id,
                     }
                 });
             },
