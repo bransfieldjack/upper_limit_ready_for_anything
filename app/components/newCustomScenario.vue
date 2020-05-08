@@ -10,6 +10,13 @@
             
             <StackLayout class="form">
 
+                <StackLayout class="input-field">
+                    <Label text="" textAlignment="center"/>
+                    <GridLayout columns="*, *, *, *, *" rows="*">
+                        <Image row="0" col="4"  src="~/images/question-mark.png" height="10%" width="10%" @tap="helpDialog"></Image>
+                    </GridLayout>
+                </StackLayout>
+
                 <Label text="" textAlignment="center"/>
 
                 <Image src="~/images/custom-scenario.png" height="40%" width="40%"></Image>
@@ -87,6 +94,7 @@
     import home from "./home";
     import Vue from "nativescript-vue";
     import RadDataForm from "nativescript-ui-dataform/vue";
+    import helpModalComponent from "./helpModalComponent";
 
     Vue.use(RadDataForm);
 
@@ -124,6 +132,9 @@
             },  
         },
         methods: {
+            helpDialog(){
+                this.$showModal(helpModalComponent);
+            },
             save() {
                 this.$store.dispatch("insert", this.scenario);
                 this.$navigateTo(home);
@@ -144,9 +155,7 @@
                 this.$navigateTo(myScenarios);
             },
             home() {
-                console.log(this.$store.state.data)
-                // console.log(this.$store.dispatch("query")); 
-                // this.$navigateTo(home);
+                this.$navigateTo(home);
             },
         },
     };

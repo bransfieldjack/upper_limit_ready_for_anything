@@ -8,8 +8,8 @@
         <ScrollView>
 
             
-            <StackLayout class="form" v-for="item in this.$store.state.data" v-if="item.id == id">
-
+            <StackLayout class="form" v-for="item in scenario_being_edited" v-if="item.id == id">
+                <!-- v-bind=:v-model="test_scenario" -->
                 <Label text="" textAlignment="center"/>
 
                 <Image src="~/images/custom-scenario.png" height="40%" width="40%"></Image>
@@ -89,16 +89,17 @@
             return {
                 store_data: this.$store.state.data,
                 test_scenario: null,
+                scenario_being_edited: null,
                 scenario: {
-                    "title": "",
-                    "structures": "",
-                    "processes": "",
-                    "communication": "",
-                    "people": "",
-                    "anything_else": "",
-                    "custom": true,
-                    "favourite": false,
-                    "inprogress": true,
+                    "title": "null",
+                    "structures": "null",
+                    "processes": "null",
+                    "communication": "null",
+                    "people": "null",
+                    "anything_else": "null",
+                    "custom": "null",
+                    "favourite": "null",
+                    "inprogress": "null",
                 },
             };
         },
@@ -110,18 +111,18 @@
                     return this.scenario[field];
                 });
 
-                console.log(data);
                 
             },  
         },
         methods: {
             save() {
-                this.$store.dispatch("insert", this.scenario);
+                this.$store.dispatch("update", this.scenario_being_edited[0]);
                 this.$navigateTo(home);
+                // console.log(this.scenario_being_edited[0]);
+                // console.log(typeof(this.scenario_being_edited));
             },
             load() {
                 this.$store.dispatch("query");
-                this.test_scenario = this.$store.dispatch("query");
             },
             clear() {
                 this.scenario.title = "";
@@ -136,49 +137,20 @@
                 this.$navigateTo(myScenarios);
             },
             home() {
-                console.log(this.$store.state.data)
+                // console.log(this.$store.state.data)
             },
         },
         mounted(){
             const id = this.$props.id;
 
             this.load();
+            this.test_scenario = this.$store.state.data;//.findIndex(x => x.id === id);
 
-            var x; 
+            this.scenario_being_edited = this.test_scenario.filter(obj => {
+                return obj.id === id
+            })
 
-            // for(x in this.$store.state.data){
-                
-            // }
-
-            this.test_scenario = this.$store.state.data.findIndex(x => x.id === id);
-
-            console.log(this.test_scenario)
-            // getNameById (id) {
-            // return axios.get('/names/?ids=' + id)
-            //     .then(response => {
-            //         this.response = response.data
-            //         return this.response[0].name
-            //     })
-            // }
-            
-            // const Sqlite = require("nativescript-sqlite");
-
-            // var item = new Sqlite("my.db", function(db){
-            //     result = db.all('select * from custom_templates where id=?', [this.$props.id]) 
-            //     return result;
-            // });
-
-            // // this.$store.dispatch("init");
-            // // this.load();
-
-            // console.log("test:");
-            // console.log(item);
-
-            // var j;
-
-            // for(j in item){
-            //     console.log(j);
-            // }
+            console.log(this.scenario_being_edited);
 
         },
     };

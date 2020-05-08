@@ -107,6 +107,14 @@ const store = new Vuex.Store({
         });
     },
 
+    update(context, data) { // When inserting information, data is passed to the insert action and a query is executed.
+        context.state.database.execSQL("UPDATE custom_templates SET title=?, structures=?, processes=?, communication=?, people=?, anything_else=?, custom=?,  favourite=?, inprogress=? WHERE id=?;", [data.title, data.structures, data.processes, data.communication, data.people, data.anything_else, data.custom, data.favourite, data.inprogress, data.id]).then(id => {  // context.state.database variable is the open database in the state variables section.
+            context.commit("save", { data: data });
+        }, error => {
+            console.log("Update ERROR", error);
+        });
+    },
+
     query(context) {
         context.state.database.all("SELECT id, title, structures, processes, communication, people, anything_else, custom, favourite, inprogress FROM custom_templates", []).then(result => {
             context.commit("load", { data: result });
