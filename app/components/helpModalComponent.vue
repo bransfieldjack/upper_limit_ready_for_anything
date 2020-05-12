@@ -1,40 +1,25 @@
 <template>
-    <Page>
 
-        <ActionBar title="Custom Scenario">
-            <NavigationButton text="Go back" android.systemIcon="ic_menu_back" @tap="this.$navigateBack" />
-        </ActionBar>
+    <ScrollView class="input-field" width="400" height="400">
+        <StackLayout class="input-field" width="400" height="400">
 
-        <ScrollView>
+            <Label text="" textAlignment="center"/>
 
-            
-            <StackLayout class="form" >
+            <Image src="~/images/question-mark.png" height="20%" width="20%"></Image>
+            <Label text="" textAlignment="center"/>
 
-                <StackLayout class="input-field" >
+            <Label text="Introduction and demo scenario" class="h2" testwrap="true" textAlignment="center"/>
 
-                    <Label text="" textAlignment="center"/>
-
-                    <GridLayout columns="*, *, *, *, *" rows="*">
-                        <Image row="0" col="2"  src="~/images/question-mark.png" height="30%" width="30%"></Image>
-                    </GridLayout>
-
-                    <Label text="" textAlignment="center"/>
-
-                    <Label text="Introduction and demo scenario" class="h2" textAlignment="center"/>
-                    
-                </StackLayout>
-
-               
-                
-
-                
-
+            <StackLayout width="100%" backgroundColor="white" padding="10">
+                <Label textWrap="true" class="h3 p-12" style="font-size: 15px;" text="Let’s go through an example to get a better understanding of how this will work. Our business is Jack’s Rock-Hard Lemonade, a corner lemonade stand with 6 employees and $1m annual sales at 50% GP. The business started a year ago and is run by Jack and a few team members that have been with him since the beginning. Sales are transacted at a physical stand by and the average hard-lemonade costs $10"
+                />   
+                <Label textWrap="true" class="h3 p-12" style="font-size: 15px;" text="Let’s look at an example using the first scenario “You had to serve twice as many customers with the same amount of staff”"
+                />   
             </StackLayout>
+            
+        </StackLayout>
+    </ScrollView>                 
 
-
-        </ScrollView>
-
-    </Page>
 </template>
 
 <script>

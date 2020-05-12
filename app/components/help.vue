@@ -1,16 +1,11 @@
 <template>
     <Page>
-        <ActionBar title="How to complete this activity" color="#0C3C60" />
-
-        <GridLayout columns="*" rows="*, *, *, *" backgroundColor="#ffffff">
-            <Label textAlignment="center" class="p" text="Step 1" row="0" col="0" />
-            <Label textAlignment="center" class="p" text=" " row="1" col="0" />
-            <TextView row="2" col="0">
-                <FormattedString>
-                <Span text="NativeScript" foregroundColor="#3C5AFD"></Span>
-                </FormattedString>
-            </TextView>
-        </GridLayout>
+        <StackLayout class="input-field">
+            <Label text="" textAlignment="center"/>
+            <GridLayout columns="*, *, *, *, *" rows="*">
+                <Image row="0" col="4"  src="~/images/question-mark.png" height="10%" width="10%" @tap="demoScenario"></Image>
+            </GridLayout>
+        </StackLayout>
 
     </Page>
 </template>

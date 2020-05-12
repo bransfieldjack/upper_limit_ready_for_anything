@@ -22,7 +22,7 @@
                 </TabStripItem>
 
                 <TabStripItem>
-                    <Label text="Help"></Label>
+                    <Label text="About"></Label>
                     <Image :src="help_icon" height="20%" width="20%"></Image>
                 </TabStripItem>
 
@@ -102,7 +102,7 @@
 
                         <Label class="h2 text-center" text="" />
                 
-                        <Button width="70%" height="30%" class="my-template-scenarios-button" @tap="$modal.close()" />
+                        <Button width="70%" height="30%" class="my-template-scenarios-button" @tap="templateModal" />
                         <Label class="h2 text-center" text="" />
 
                     </StackLayout>
@@ -130,7 +130,7 @@
                             <Label class="h2" v-bind:text="item.title" textAlignment="center" textWrap="true"/>
                             <Label text="" textAlignment="center"/>
 
-                            <GridLayout width="40%" height="20%" @tap="cardTapped"
+                            <GridLayout width="40%" height="20%" @tap="cardTapped(item.id)"
                                 columns="*, *, *" rows="*">
 
                                 <Image col="1" v-if="item.inprogress == 'true'" :src="full_cloud" loadMode="async"
@@ -333,6 +333,7 @@
     import help from "./help";
     import ModalComponent from "./ModalComponent";  
     import editScenario from "./editScenario";
+    import templateModal from "./templateModal";
 
     const Sqlite = require("nativescript-sqlite");
 
@@ -343,6 +344,10 @@
             help
         },
         methods: {
+            templateModal() {
+                // this.$navigateTo(templateModal);
+                this.$showModal(templateModal);
+            },
             onScroll: function () {
                 //access to the native event
                 const scrollView = this.$refs.scrollView.nativeView;

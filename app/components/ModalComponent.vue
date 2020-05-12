@@ -6,7 +6,7 @@
 
         <Label class="h2 text-center" text="" />
   
-        <Button width="70%" height="30%" class="my-template-scenarios-button" @tap="$modal.close()" />
+        <Button width="70%" height="30%" class="my-template-scenarios-button" @tap="templateModal" />
         <Label class="h2 text-center" text="" />
 
 	</StackLayout>
@@ -14,6 +14,7 @@
 
 <script>
 import newCustomScenario from "./newCustomScenario";
+import templateModal from "./templateModal";
 
 export default {
     data() {
@@ -22,6 +23,9 @@ export default {
         };
     },
     methods: {
+        templateModal() {
+            this.$showModal(templateModal);
+        },
         newCustomScenario() {
             this.$navigateTo(newCustomScenario);
             this.$modal.close()

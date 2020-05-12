@@ -1,7 +1,7 @@
 <template>
     <Page>
 
-        <ActionBar title="Custom Scenario">
+        <ActionBar title="Custom Scenario" class="h2 p-10">
             <NavigationButton text="Go back" android.systemIcon="ic_menu_back" @tap="this.$navigateBack" />
         </ActionBar>
 
@@ -13,7 +13,7 @@
                 <StackLayout class="input-field">
                     <Label text="" textAlignment="center"/>
                     <GridLayout columns="*, *, *, *, *" rows="*">
-                        <Image row="0" col="4"  src="~/images/question-mark.png" height="10%" width="10%" @tap="helpDialog"></Image>
+                        <Image row="0" col="4"  src="~/images/question-mark.png" height="10%" width="10%" @tap="demoScenario"></Image>
                     </GridLayout>
                 </StackLayout>
 
@@ -23,7 +23,7 @@
 
                 <Label text="" textAlignment="center"/>
 
-                <Label text="Title" class="h2" textAlignment="left"/>
+                <Label text="Title" class="h2" textAlignment="center"/>
 
                 <StackLayout class="input-field">
                     <TextField v-model="scenario.title" class="input"></TextField>
@@ -72,14 +72,6 @@
                     </GridLayout>
                 </StackLayout>
 
-                <!-- <ListView for="item in store_data" class="list-group" row="1" col="0"> // Test block to view data.
-                    <v-template>
-                        <StackLayout class="list-group-item">
-                            <Label v-bind:text="item.title" />
-                        </StackLayout>
-                    </v-template>
-                </ListView> -->
-
             </StackLayout>
 
 
@@ -95,6 +87,7 @@
     import Vue from "nativescript-vue";
     import RadDataForm from "nativescript-ui-dataform/vue";
     import helpModalComponent from "./helpModalComponent";
+    import demoScenario from "./demoScenario";
 
     Vue.use(RadDataForm);
 
@@ -132,6 +125,9 @@
             },  
         },
         methods: {
+            demoScenario() {
+                this.$navigateTo(demoScenario);
+            },
             helpDialog(){
                 this.$showModal(helpModalComponent);
             },
