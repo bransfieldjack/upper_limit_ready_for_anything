@@ -24,11 +24,13 @@ export default {
     },
     methods: {
         templateModal() {
+            this.$modal.close()
             this.$showModal(templateModal);
         },
         newCustomScenario() {
-            this.$navigateTo(newCustomScenario);
             this.$modal.close()
+            this.$navigateTo(newCustomScenario);
+            
         },
     }
 };
