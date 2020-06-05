@@ -11,10 +11,10 @@
                     <Image :src="scenarios_icon" height="20%" width="20%"></Image>
                 </TabStripItem>
 
-                <TabStripItem>
+                <!-- <TabStripItem>
                     <Label text="New Scenario"></Label>
                     <Image :src="template_scenario" height="20%" width="20%"></Image>
-                </TabStripItem>
+                </TabStripItem> -->
 
                 <TabStripItem>
                     <Label text="Favourites"></Label>
@@ -32,9 +32,10 @@
             <TabContentItem>
 
                 <ScrollView>
+                    
                     <StackLayout class="home-panel">
 
-                    <CardView v-for="item in this.$store.state.data" class="cardStyle" margin="10" elevation="40" radius="5" ios:shadowRadius="3">
+                    <CardView v-for="item in this.$store.state.data" class="card" margin="10" elevation="40" radius="5" ios:shadowRadius="3">
                         <StackLayout class="card-layout">
                             <Label text="" textAlignment="center"/>
 
@@ -53,8 +54,8 @@
                             </GridLayout>
 
                             <Label text="" textAlignment="center"/>
-                            <Image v-if="item.custom" :src="custom_scenario_icon" height="40%" width="40%"/>
-                            <Image v-else :src="template_scenario_icon" height="40%" width="40%"/>
+                            <!-- <Image v-if="item.custom" :src="custom_scenario_icon" height="40%" width="40%"/>
+                            <Image v-else :src="template_scenario_icon" height="40%" width="40%"/> -->
                             <Label class="h2" v-bind:text="item.title" textAlignment="center" textWrap="true"/>
                             
                             <Label text="" textAlignment="center"/>
@@ -93,7 +94,7 @@
                         
             </TabContentItem>
 
-            <TabContentItem>
+            <!-- <TabContentItem>
                 <ScrollView>
                     <StackLayout backgroundColor="white" width="400" height="400">
 
@@ -107,7 +108,7 @@
 
                     </StackLayout>
                 </ScrollView>
-            </TabContentItem>
+            </TabContentItem> -->
 
             <TabContentItem>
 
@@ -115,9 +116,13 @@
 
                     <StackLayout class="home-panel">
 
-                    <CardView v-for="item in this.$store.state.data" v-if="item.favourite == 'true'" class="cardStyle" margin="10" elevation="40" radius="5" ios:shadowRadius="3">
+                    <CardView v-for="item in this.$store.state.data" v-if="item.favourite == 'true'" class="card" margin="10" elevation="40" radius="5" ios:shadowRadius="3">
                         <StackLayout class="card-layout" >
-                            <Label text="" textAlignment="center"/>
+
+                            <Label class="h2" :text="item.title" />
+						    <Label class="body" textWrap="true" :text="item.content" />
+
+                            <!-- <Label text="" textAlignment="center"/>
 
                             <GridLayout width="100%" height="20%"
                                 columns="*, *, *, *, *, *, *, *, *, *" rows="*">
@@ -142,7 +147,7 @@
 
                             </GridLayout>
 
-                            <Label text="" textAlignment="center"/>
+                            <Label text="" textAlignment="center"/> -->
 
                         </StackLayout>
                     </CardView>
@@ -311,14 +316,6 @@
                     </StackLayout>
                 </ScrollView>
 
-<!--                 
-                <ScrollView>
-                    <StackLayout backgroundColor="white" width="400" height="400">
-
-                        <Label class="h2 text-center" text="Help" />
-        
-                    </StackLayout>
-                </ScrollView> -->
             </TabContentItem>
         
         </BottomNavigation>
@@ -522,6 +519,19 @@
 </script>
 
 <style scoped>
+
+        
+    .card {
+        background-color: #fff;
+        color: #4d4d4d;
+        margin: 15 15 0;
+    }
+    .card-layout {
+        padding: 20;
+    }
+    .card-layout .h1 {
+        margin-bottom: 15;
+    }
 
     .delete-icon {
         padding-right: 50px;

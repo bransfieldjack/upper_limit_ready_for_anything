@@ -30,3 +30,6 @@ const router = new NSVueRouter({
 })
  
 export default router 
+
+
+// jake has tits
